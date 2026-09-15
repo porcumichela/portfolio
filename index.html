@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Michela — Portfolio</title>
+  <meta name="description" content="Portfolio di Michela, designer creativa.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#faf7f2;
+      --ink:#1c1a17;
+      --muted:#6b645b;
+      --accent:#c4571f;
+      --card:#ffffff;
+      --line:#e7e0d6;
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:"Inter",system-ui,sans-serif;
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+    }
+    img{max-width:100%;display:block}
+    a{color:inherit}
+    .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+
+    /* NAV */
+    nav{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:22px 0;
+    }
+    nav .logo{font-family:"Fraunces",serif;font-size:1.25rem;font-weight:600}
+    nav .links{display:flex;gap:26px;font-size:.95rem;font-weight:500}
+    nav .links a{text-decoration:none;color:var(--muted)}
+    nav .links a:hover{color:var(--ink)}
+
+    /* HERO */
+    header.hero{padding:70px 0 40px}
+    header.hero p.kicker{
+      color:var(--accent);font-weight:600;letter-spacing:.08em;
+      text-transform:uppercase;font-size:.8rem;margin:0 0 14px
+    }
+    header.hero h1{
+      font-family:"Fraunces",serif;font-weight:600;
+      font-size:clamp(2.4rem,6vw,4rem);line-height:1.05;margin:0 0 20px;
+      max-width:14ch;
+    }
+    header.hero p.lead{
+      font-size:1.2rem;color:var(--muted);max-width:52ch;margin:0 0 28px
+    }
+    .btn{
+      display:inline-block;background:var(--accent);color:#fff;
+      text-decoration:none;font-weight:600;
+      padding:13px 24px;border-radius:999px;font-size:.98rem;
+    }
+    .btn:hover{opacity:.9}
+
+    /* SECTION TITLES */
+    section{padding:56px 0}
+    h2{
+      font-family:"Fraunces",serif;font-weight:600;
+      font-size:clamp(1.6rem,4vw,2.3rem);margin:0 0 8px
+    }
+    .section-sub{color:var(--muted);margin:0 0 34px;max-width:56ch}
+
+    /* WORKS GRID */
+    .grid{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+      gap:22px;
+    }
+    .card{
+      background:var(--card);border:1px solid var(--line);
+      border-radius:var(--radius);overflow:hidden;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.08)}
+    .card .thumb{aspect-ratio:4/3;background:linear-gradient(135deg,#e9ddce,#d9c6b0);display:flex;align-items:center;justify-content:center;color:#a48c72;font-size:.9rem}
+    .card .body{padding:18px 20px 22px}
+    .card h3{margin:0 0 6px;font-size:1.1rem}
+    .card p{margin:0;color:var(--muted);font-size:.95rem}
+
+    /* ABOUT */
+    .about{display:grid;grid-template-columns:1fr 1.4fr;gap:40px;align-items:start}
+    .about .photo{aspect-ratio:1;border-radius:var(--radius);background:linear-gradient(135deg,#d9c6b0,#c4571f);}
+    @media(max-width:720px){.about{grid-template-columns:1fr}}
+
+    /* CONTACT */
+    .contact{text-align:center;padding:70px 0}
+    .contact h2{margin-bottom:14px}
+    .contact p{color:var(--muted);max-width:46ch;margin:0 auto 26px}
+
+    footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:.9rem;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <span class="logo">Michela</span>
+      <div class="links">
+        <a href="#lavori">Lavori</a>
+        <a href="#chisono">Chi sono</a>
+        <a href="#contatti">Contatti</a>
+      </div>
+    </nav>
+
+    <header class="hero" id="top">
+      <p class="kicker">Designer creativa</p>
+      <h1>Progetto identità visive con carattere.</h1>
+      <p class="lead">Ciao, sono Michela. Mi occupo di brand design e illustrazione. Qui trovi una selezione dei miei lavori.</p>
+      <a class="btn" href="#lavori">Guarda i lavori</a>
+    </header>
+
+    <section id="lavori">
+      <h2>Lavori selezionati</h2>
+      <p class="section-sub">Una raccolta dei progetti di cui vado più fiera. (Sostituisci i riquadri con le tue immagini.)</p>
+      <div class="grid">
+        <article class="card"><div class="thumb">Immagine progetto</div><div class="body"><h3>Progetto uno</h3><p>Brand identity — 2025</p></div></article>
+        <article class="card"><div class="thumb">Immagine progetto</div><div class="body"><h3>Progetto due</h3><p>Illustrazione — 2025</p></div></article>
+        <article class="card"><div class="thumb">Immagine progetto</div><div class="body"><h3>Progetto tre</h3><p>Packaging — 2024</p></div></article>
+        <article class="card"><div class="thumb">Immagine progetto</div><div class="body"><h3>Progetto quattro</h3><p>Editorial — 2024</p></div></article>
+        <article class="card"><div class="thumb">Immagine progetto</div><div class="body"><h3>Progetto cinque</h3><p>Web design — 2024</p></div></article>
+        <article class="card"><div class="thumb">Immagine progetto</div><div class="body"><h3>Progetto sei</h3><p>Logo — 2023</p></div></article>
+      </div>
+    </section>
+
+    <section id="chisono">
+      <div class="about">
+        <div class="photo"></div>
+        <div>
+          <h2>Chi sono</h2>
+          <p class="section-sub">Sono una designer con base in Italia. Lavoro con studi e piccole realtà per dare forma a marchi che si notano e si ricordano.</p>
+          <p>Racconta qui il tuo percorso, i tuoi strumenti preferiti, cosa ti appassiona. Due o tre frasi bastano per farti conoscere.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contatti">
+      <h2>Lavoriamo insieme</h2>
+      <p>Hai un progetto in mente? Scrivimi, rispondo volentieri.</p>
+      <a class="btn" href="mailto:tua-email@esempio.com">Scrivimi una mail</a>
+    </section>
+
+    <footer>
+      © 2026 Michela — Fatto con cura.
+    </footer>
+  </div>
+</body>
+</html>
