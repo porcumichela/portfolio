@@ -3,8 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Michela — Portfolio</title>
-  <meta name="description" content="Portfolio di Michela, designer creativa.">
+  <title>Michela Porcu — Fashion &amp; Graphic Designer</title>
+  <meta name="description" content="Portfolio di Michela Porcu, Fashion &amp; Graphic Designer: collezioni, grafica tessile e schede tecniche, dal moodboard al capo finito. Base a Verona.">
+  <meta name="author" content="Michela Porcu">
+  <meta name="theme-color" content="#faf7f2">
+
+  <!-- anteprima quando il link viene condiviso -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:site_name" content="Michela Porcu">
+  <meta property="og:title" content="Michela Porcu — Fashion &amp; Graphic Designer">
+  <meta property="og:description" content="Collezioni, grafica tessile e schede tecniche, dal moodboard al capo finito. Tre progetti, tavola per tavola.">
+  <meta property="og:image" content="images/og-card.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Michela Porcu, Fashion &amp; Graphic Designer">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Michela Porcu — Fashion &amp; Graphic Designer">
+  <meta name="twitter:description" content="Collezioni, grafica tessile e schede tecniche, dal moodboard al capo finito.">
+  <meta name="twitter:image" content="images/og-card.jpg">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23faf7f2'/%3E%3Ccircle cx='32' cy='25' r='11' fill='%23f5b301'/%3E%3Ctext x='32' y='55' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%231c1a17' text-anchor='middle'%3EMP%3C/text%3E%3C/svg%3E">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -13,12 +33,22 @@
       --bg:#faf7f2;
       --ink:#1c1a17;
       --muted:#6b645b;
-      --accent:#c4571f;
+      --accent:#f5b301;
+      --accent-ink:#8a5a00;
       --card:#ffffff;
       --line:#e7e0d6;
+      --line-strong:#cbbfae;
       --radius:16px;
+      --radius-sm:8px;
+      /* scala tipografica 1.25 */
+      --t-hero:clamp(2.4rem,5.8vw,4rem);
+      --t-h2:clamp(1.75rem,3.4vw,2.5rem);
+      --t-h3:1.5rem;
+      --t-h4:1.125rem;
+      --t-lead:1.15rem;
     }
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
       margin:0;
       background:var(--bg);
@@ -31,125 +61,734 @@
     a{color:inherit}
     .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
 
-    /* NAV */
-    nav{
-      display:flex;justify-content:space-between;align-items:center;
-      padding:22px 0;
+    /* focus visibile su ogni elemento interattivo */
+    :where(a,button,[tabindex]):focus-visible{
+      outline:2px solid var(--accent-ink);outline-offset:3px;border-radius:6px
     }
-    nav .logo{font-family:"Fraunces",serif;font-size:1.25rem;font-weight:600}
-    nav .links{display:flex;gap:26px;font-size:.95rem;font-weight:500}
-    nav .links a{text-decoration:none;color:var(--muted)}
+    .skip{
+      position:absolute;left:-9999px;top:0;z-index:99;
+      background:var(--ink);color:#fff;padding:10px 18px;border-radius:0 0 var(--radius-sm) 0;
+      text-decoration:none;font-size:.9rem
+    }
+    .skip:focus{left:0}
+
+    /* NAV */
+    .navbar{
+      position:sticky;top:0;z-index:40;
+      background:rgba(250,247,242,.88);
+      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      border-bottom:1px solid transparent;transition:border-color .2s ease
+    }
+    .navbar.scrolled{border-bottom-color:var(--line)}
+    nav{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:18px 0}
+    nav .logo{font-family:"Fraunces",serif;font-size:1.25rem;font-weight:600;font-variation-settings:"opsz" 24;white-space:nowrap}
+    nav .links{display:flex;gap:24px;font-size:.93rem;font-weight:500;flex-wrap:wrap}
+    nav .links a{text-decoration:none;color:var(--muted);transition:color .15s ease}
     nav .links a:hover{color:var(--ink)}
+    @media(max-width:640px){
+      nav{flex-direction:column;align-items:flex-start;gap:10px;padding:14px 0}
+      nav .links{gap:16px;font-size:.85rem}
+    }
 
     /* HERO */
-    header.hero{padding:70px 0 40px}
+    header.hero{position:relative;padding:96px 0 76px;overflow:visible}
+    header.hero > *{position:relative;z-index:1;max-width:620px}
+    /* accento giallo morbido — accento, non soggetto */
+    header.hero::before{
+      content:"";position:absolute;z-index:0;pointer-events:none;
+      right:-10px;top:14px;width:min(36vw,340px);aspect-ratio:1;
+      background:radial-gradient(circle at 36% 34%,#ffeab5,#f7c948 58%,#f0b21a 84%);
+      border-radius:47% 53% 62% 38% / 52% 43% 57% 48%;
+      opacity:.62;box-shadow:0 26px 72px rgba(240,166,0,.16);filter:blur(2px);
+    }
+    header.hero::after{
+      content:"";position:absolute;z-index:0;pointer-events:none;
+      right:286px;top:376px;width:82px;aspect-ratio:1;
+      border:2px solid var(--accent);border-radius:50%;opacity:.35;
+    }
+    @media(max-width:760px){
+      header.hero{padding:56px 0 48px}
+      header.hero::before{width:52vw;right:-16px;top:-3vw;opacity:.45}
+      header.hero::after{display:none}
+    }
     header.hero p.kicker{
-      color:var(--accent);font-weight:600;letter-spacing:.08em;
+      color:var(--accent-ink);font-weight:600;letter-spacing:.08em;
       text-transform:uppercase;font-size:.8rem;margin:0 0 14px
     }
     header.hero h1{
       font-family:"Fraunces",serif;font-weight:600;
-      font-size:clamp(2.4rem,6vw,4rem);line-height:1.05;margin:0 0 20px;
-      max-width:14ch;
+      font-variation-settings:"opsz" 120;
+      font-size:var(--t-hero);line-height:1.04;margin:0 0 22px;
+      letter-spacing:-.02em;max-width:17ch;
     }
     header.hero p.lead{
-      font-size:1.2rem;color:var(--muted);max-width:52ch;margin:0 0 28px
+      font-size:var(--t-lead);color:var(--muted);max-width:54ch;margin:0 0 30px
     }
+
+    /* BOTTONI */
     .btn{
-      display:inline-block;background:var(--accent);color:#fff;
-      text-decoration:none;font-weight:600;
-      padding:13px 24px;border-radius:999px;font-size:.98rem;
+      display:inline-flex;align-items:center;gap:8px;
+      background:var(--accent);color:var(--ink);
+      text-decoration:none;font-weight:600;font-family:inherit;
+      padding:13px 24px;border-radius:999px;font-size:.98rem;border:1.5px solid var(--accent);
+      cursor:pointer;transition:background .15s ease,border-color .15s ease,transform .15s ease;
     }
-    .btn:hover{opacity:.9}
+    .btn:hover{background:#e8a900;border-color:#e8a900;transform:translateY(-1px)}
+    .btn-ghost{background:transparent;border-color:var(--line-strong);color:var(--ink)}
+    .btn-ghost:hover{background:#f2ece2;border-color:var(--line-strong)}
+    .cta-row{display:flex;flex-wrap:wrap;gap:12px}
+    .contact .cta-row{justify-content:center}
 
-    /* SECTION TITLES */
-    section{padding:56px 0}
+    /* SEZIONI */
+    section{padding:clamp(64px,8vw,104px) 0;scroll-margin-top:86px}
+    @media(max-width:640px){section{scroll-margin-top:112px}}
     h2{
-      font-family:"Fraunces",serif;font-weight:600;
-      font-size:clamp(1.6rem,4vw,2.3rem);margin:0 0 8px
+      font-family:"Fraunces",serif;font-weight:600;font-variation-settings:"opsz" 48;
+      font-size:var(--t-h2);margin:0 0 10px;letter-spacing:-.01em
     }
-    .section-sub{color:var(--muted);margin:0 0 34px;max-width:56ch}
+    .section-sub{color:var(--muted);margin:0 0 36px;max-width:60ch}
+    #lavori{padding-bottom:clamp(80px,10vw,128px)}
+    #formazione{border-top:1px solid var(--line)}
 
-    /* WORKS GRID */
-    .grid{
-      display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-      gap:22px;
+    /* CAROSELLO PROGETTI */
+    .carousel{position:relative}
+    .car-viewport{
+      overflow-x:auto;overflow-y:hidden;border-radius:var(--radius);
+      scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch
     }
-    .card{
+    .car-viewport::-webkit-scrollbar{display:none}
+    .car-track{display:flex;gap:20px}
+    .slide{min-width:100%;scroll-snap-align:start}
+    .slide-inner{
+      display:grid;grid-template-columns:.82fr 1fr;min-height:0;
       background:var(--card);border:1px solid var(--line);
-      border-radius:var(--radius);overflow:hidden;
-      transition:transform .18s ease, box-shadow .18s ease;
+      border-radius:var(--radius);overflow:hidden
     }
-    .card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.08)}
-    .card .thumb{aspect-ratio:4/3;background:linear-gradient(135deg,#e9ddce,#d9c6b0);display:flex;align-items:center;justify-content:center;color:#a48c72;font-size:.9rem}
-    .card .body{padding:18px 20px 22px}
-    .card h3{margin:0 0 6px;font-size:1.1rem}
-    .card p{margin:0;color:var(--muted);font-size:.95rem}
+    .slide-cover{
+      position:relative;display:block;width:100%;padding:0;margin:0;border:none;
+      background:#efe8dd;cursor:zoom-in;overflow:hidden;aspect-ratio:3/4;font:inherit
+    }
+    .slide-cover img{width:100%;height:100%;object-fit:cover;object-position:center 22%;transition:transform .5s ease}
+    .slide-cover:hover img{transform:scale(1.03)}
+    .cover-badge{
+      position:absolute;left:14px;bottom:14px;
+      background:rgba(28,25,21,.72);color:#fff;font-size:.78rem;font-weight:500;
+      padding:5px 12px;border-radius:999px;letter-spacing:.01em;pointer-events:none
+    }
+    .slide-body{padding:40px 44px;display:flex;flex-direction:column;justify-content:center}
+    .slide-body .project-meta{
+      color:var(--accent-ink);font-weight:600;font-size:.8rem;margin:0 0 12px;
+      text-transform:uppercase;letter-spacing:.06em
+    }
+    .slide-body h3{
+      font-family:"Fraunces",serif;font-weight:600;font-variation-settings:"opsz" 24;
+      font-size:var(--t-h3);line-height:1.12;margin:0 0 10px
+    }
+    .project-facts{
+      color:var(--muted);font-size:.83rem;margin:0 0 18px;
+      padding-bottom:16px;border-bottom:1px solid var(--line);line-height:1.5
+    }
+    .slide-body p.desc{color:var(--muted);margin:0 0 28px}
+    .slide-body p.desc strong{color:var(--ink);font-weight:600}
+    .slide-body .btn{align-self:flex-start}
+    @media(max-width:820px){
+      .slide-inner{grid-template-columns:1fr}
+      .slide-cover{aspect-ratio:3/4;max-height:64vh}
+      .slide-body{padding:26px 24px 30px}
+    }
+    .car-nav{
+      position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+      width:44px;height:44px;border-radius:50%;border:1px solid var(--line);
+      background:#fff;color:var(--ink);font-size:1.45rem;line-height:1;cursor:pointer;
+      box-shadow:0 4px 14px rgba(28,25,21,.10);
+      display:flex;align-items:center;justify-content:center;
+      transition:background .15s,border-color .15s,opacity .15s
+    }
+    .car-nav:hover{background:var(--accent);border-color:var(--accent)}
+    .car-nav[disabled]{opacity:.32;cursor:default}
+    .car-nav[disabled]:hover{background:#fff;border-color:var(--line)}
+    .car-nav.prev{left:-14px}
+    .car-nav.next{right:-14px}
+    @media(max-width:1100px){.car-nav.prev{left:6px}.car-nav.next{right:6px}}
+    /* su mobile le frecce finiscono sopra il disegno: restano swipe e anteprime */
+    @media(max-width:820px){.car-nav{display:none}}
 
-    /* ABOUT */
-    .about{display:grid;grid-template-columns:1fr 1.4fr;gap:40px;align-items:start}
-    .about .photo{aspect-ratio:1;border-radius:var(--radius);background:linear-gradient(135deg,#d9c6b0,#c4571f);}
-    @media(max-width:720px){.about{grid-template-columns:1fr}}
+    /* anteprime dei tre progetti: si vede a colpo d'occhio che sono tre */
+    .thumbs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+    .thumbs button{
+      display:flex;align-items:center;gap:10px;
+      background:transparent;border:1px solid var(--line);border-radius:999px;
+      padding:5px 16px 5px 5px;cursor:pointer;font:inherit;font-size:.85rem;font-weight:500;
+      color:var(--muted);transition:border-color .15s,color .15s,background .15s
+    }
+    .thumbs button:hover{border-color:var(--line-strong);color:var(--ink)}
+    .thumbs button img{width:34px;height:34px;border-radius:50%;object-fit:cover;object-position:center 20%}
+    .thumbs button[aria-current="true"]{border-color:var(--accent-ink);color:var(--ink);background:#fdf6e6}
 
-    /* CONTACT */
-    .contact{text-align:center;padding:70px 0}
+    /* LIGHTBOX */
+    .lb{
+      position:fixed;inset:0;z-index:60;
+      background:rgba(28,25,21,.72);
+      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      display:flex;align-items:center;justify-content:center;padding:28px;
+      opacity:0;visibility:hidden;
+      /* in entrata visibility scatta subito (altrimenti il focus cade su un elemento
+         ancora invisibile), in uscita aspetta la fine della dissolvenza */
+      transition:opacity .28s ease,visibility 0s linear .28s
+    }
+    .lb.open{opacity:1;visibility:visible;transition:opacity .28s ease,visibility 0s linear 0s}
+    .lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;gap:16px;max-width:min(92vw,1180px)}
+    .lb img{
+      max-width:100%;max-height:76vh;width:auto;border-radius:var(--radius-sm);
+      box-shadow:0 12px 44px rgba(0,0,0,.34);
+      transform:scale(.98);transition:transform .28s ease,opacity .18s ease
+    }
+    .lb.open img{transform:scale(1)}
+    .lb-cap{
+      color:rgba(255,255,255,.84);font-size:.92rem;line-height:1.5;
+      text-align:center;max-width:62ch;margin:0
+    }
+    .lb button{
+      position:absolute;width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;
+      background:rgba(255,255,255,.10);color:#fff;
+      display:flex;align-items:center;justify-content:center;line-height:1;
+      transition:background .15s,color .15s
+    }
+    .lb button:hover{background:var(--accent);color:var(--ink)}
+    .lb .close{top:20px;right:24px;font-size:1.5rem}
+    .lb .lb-prev,.lb .lb-next{top:50%;transform:translateY(-50%);font-size:1.7rem}
+    .lb .lb-prev{left:20px}
+    .lb .lb-next{right:20px}
+    .lb-count{
+      position:absolute;top:24px;left:26px;
+      color:rgba(255,255,255,.82);font-size:.88rem;font-variant-numeric:tabular-nums
+    }
+    .lb-hint{
+      position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+      color:rgba(255,255,255,.62);font-size:.78rem;white-space:nowrap
+    }
+    @media(max-width:720px){
+      .lb{padding:16px}
+      .lb .lb-prev{left:6px}.lb .lb-next{right:6px}
+      .lb img{max-height:68vh}
+      .lb-hint{display:none}
+    }
+
+    /* COMPETENZE */
+    .skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:30px}
+    .skills h3{
+      font-size:var(--t-h4);margin:0 0 14px;font-weight:600;
+      padding-bottom:10px;border-bottom:1px solid var(--line)
+    }
+    .skills ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+    .skills li{position:relative;padding-left:17px;color:var(--muted);font-size:.95rem;line-height:1.45}
+    .skills li::before{
+      content:"";position:absolute;left:0;top:.6em;
+      width:6px;height:6px;border-radius:50%;background:var(--accent)
+    }
+
+    /* CHI SONO */
+    .about{display:grid;grid-template-columns:1fr 1.4fr;gap:44px;align-items:start}
+    .about .photo{border-radius:var(--radius);overflow:hidden;background:var(--line);aspect-ratio:4/5}
+    .about .photo img{width:100%;height:100%;object-fit:cover}
+    .about p{margin:0 0 16px}
+    .about p strong{color:var(--ink);font-weight:600}
+    @media(max-width:720px){.about{grid-template-columns:1fr;gap:26px}}
+
+    /* CONTATTI */
+    .contact{text-align:center}
     .contact h2{margin-bottom:14px}
-    .contact p{color:var(--muted);max-width:46ch;margin:0 auto 26px}
+    .contact p.intro{color:var(--muted);max-width:48ch;margin:0 auto 28px}
+    .contact-meta{
+      color:var(--muted);font-size:.93rem;margin:26px auto 0;max-width:52ch
+    }
+    .contact-meta a{color:var(--accent-ink);font-weight:600;text-decoration:none}
+    .contact-meta a:hover{text-decoration:underline}
 
-    footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:.9rem;text-align:center}
+    footer{border-top:1px solid var(--line);padding:30px 0 40px;color:var(--muted);font-size:.9rem;text-align:center}
+    footer .flinks{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+    footer .flinks a{color:var(--muted);text-decoration:none}
+    footer .flinks a:hover{color:var(--ink);text-decoration:underline}
+    footer .flinks span{opacity:.5}
+
+    /* ESPERIENZA */
+    .exp{display:grid;gap:30px}
+    .exp .row{display:grid;grid-template-columns:190px 1fr;gap:24px}
+    .exp .when{color:var(--accent-ink);font-size:.9rem;font-weight:600}
+    .exp h3{margin:0 0 6px;font-size:var(--t-h4);font-weight:600}
+    .exp .role p{margin:0;color:var(--muted);font-size:.96rem}
+    .exp .role p strong{color:var(--ink);font-weight:600}
+    .exp .tools{
+      margin-top:10px !important;font-size:.85rem !important;
+      color:var(--muted);padding-top:9px;border-top:1px solid var(--line)
+    }
+    .exp .tools b{color:var(--ink);font-weight:600}
+    @media(max-width:640px){.exp .row{grid-template-columns:1fr;gap:6px}}
+
+    /* FORMAZIONE */
+    .edu{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+    .edu li{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding-bottom:14px}
+    .edu li .what{font-weight:500}
+    .edu li .year{color:var(--muted);white-space:nowrap}
+    .edu-note{display:block;color:var(--muted);font-weight:400;font-size:.9rem;margin-top:5px}
+    .edu-note strong{color:var(--accent-ink);font-weight:600}
+    @media(max-width:520px){.edu li{flex-direction:column;gap:2px}}
+
+    /* MOTION RIDOTTO */
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+    }
+
+    /* STAMPA / SALVA IN PDF */
+    @media print{
+      .navbar,.car-nav,.thumbs,.lb,.skip,.cover-badge{display:none !important}
+      header.hero::before,header.hero::after{display:none !important}
+      body{background:#fff;color:#000}
+      section{padding:18px 0;break-inside:avoid}
+      .car-viewport{overflow:visible}
+      .car-track{display:block}
+      .slide,.slide:last-child{min-width:0;break-inside:avoid;margin-bottom:22px}
+      .slide-inner{grid-template-columns:.8fr 1fr;border:1px solid #ccc}
+      .slide-cover{max-height:none}
+      .about{grid-template-columns:1fr 1.4fr}
+      a[href^="mailto"]::after,a[href$=".pdf"]::after{content:" (" attr(href) ")";font-size:.8em;color:#555}
+    }
   </style>
 </head>
 <body>
+  <a class="skip" href="#lavori">Salta ai lavori</a>
+
+  <div class="navbar" id="navbar">
+    <div class="wrap">
+      <nav>
+        <span class="logo">Michela Porcu</span>
+        <div class="links">
+          <a href="#lavori">Lavori</a>
+          <a href="#competenze">Competenze</a>
+          <a href="#chisono">Chi sono</a>
+          <a href="#esperienza">Esperienza</a>
+          <a href="#contatti">Contatti</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
   <div class="wrap">
-    <nav>
-      <span class="logo">Michela</span>
-      <div class="links">
-        <a href="#lavori">Lavori</a>
-        <a href="#chisono">Chi sono</a>
-        <a href="#contatti">Contatti</a>
-      </div>
-    </nav>
 
     <header class="hero" id="top">
-      <p class="kicker">Designer creativa</p>
-      <h1>Progetto identità visive con carattere.</h1>
-      <p class="lead">Ciao, sono Michela. Mi occupo di brand design e illustrazione. Qui trovi una selezione dei miei lavori.</p>
-      <a class="btn" href="#lavori">Guarda i lavori</a>
+      <p class="kicker">Fashion &amp; Graphic Designer</p>
+      <h1>Disegno collezioni e le grafiche che le raccontano</h1>
+      <p class="lead">Sono Michela Porcu. Sei anni tra ufficio stile e ufficio prodotto: ricerca tendenze, figurini, grafica tessile e schede tecniche. Qui sotto tre progetti, tavola per tavola.</p>
+      <div class="cta-row">
+        <a class="btn" href="#lavori">Guarda i lavori</a>
+        <a class="btn btn-ghost" href="cv-michela-porcu.pdf" download>Scarica il CV (PDF)</a>
+      </div>
     </header>
 
     <section id="lavori">
       <h2>Lavori selezionati</h2>
-      <p class="section-sub">Una raccolta dei progetti di cui vado più fiera. (Sostituisci i riquadri con le tue immagini.)</p>
-      <div class="grid">
-        <article class="card"><div class="thumb">Immagine progetto</div><div class="body"><h3>Progetto uno</h3><p>Brand identity — 2025</p></div></article>
-        <article class="card"><div class="thumb">Immagine progetto</div><div class="body"><h3>Progetto due</h3><p>Illustrazione — 2025</p></div></article>
-        <article class="card"><div class="thumb">Immagine progetto</div><div class="body"><h3>Progetto tre</h3><p>Packaging — 2024</p></div></article>
-        <article class="card"><div class="thumb">Immagine progetto</div><div class="body"><h3>Progetto quattro</h3><p>Editorial — 2024</p></div></article>
-        <article class="card"><div class="thumb">Immagine progetto</div><div class="body"><h3>Progetto cinque</h3><p>Web design — 2024</p></div></article>
-        <article class="card"><div class="thumb">Immagine progetto</div><div class="body"><h3>Progetto sei</h3><p>Logo — 2023</p></div></article>
+      <p class="section-sub">Tre progetti completi, dalla ricerca ai capi finiti. Apri un progetto per sfogliare le tavole a schermo intero.</p>
+
+      <div class="carousel" id="carousel" role="group" aria-roledescription="carosello" aria-label="Lavori selezionati">
+        <button class="car-nav prev" type="button" aria-label="Progetto precedente">&#8249;</button>
+        <div class="car-viewport" id="carViewport">
+          <div class="car-track">
+
+            <article class="slide" role="group" aria-roledescription="progetto" aria-label="1 di 3 — Olympics Line, Milano Cortina 2026">
+              <div class="slide-inner">
+                <button class="slide-cover" type="button" data-project="olimpiadi" aria-label="Apri la galleria: Olympics Line — Milano Cortina 2026, 11 tavole">
+                  <img src="images/cover-olimpiadi.jpg" width="900" height="1272" alt="Tavola della Olympics Line: giacca sportswear con stampa dei cerchi olimpici" loading="eager" fetchpriority="high" decoding="async">
+                </button>
+                <div class="slide-body">
+                  <p class="project-meta">Sportswear · Milano Cortina 2026</p>
+                  <h3>Olympics Line — Milano Cortina 2026</h3>
+                  <p class="project-facts">2025–2026 · Progetto personale, non commissionato · Concept, grafiche e linea completa donna e uomo · Illustrator, Photoshop</p>
+                  <p class="desc">Progetto personale per i Giochi invernali 2026. Sportswear con i <strong>cerchi olimpici</strong> reinterpretati in grafica, <strong>stampe</strong> nei colori delle Olimpiadi e dettagli tricolore. Undici tavole: moodboard, materiali, stampe e le linee complete donna e uomo.</p>
+                  <button class="btn view" type="button" data-project="olimpiadi">Sfoglia le 11 tavole</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="slide" role="group" aria-roledescription="progetto" aria-label="2 di 3 — The Bio-Denim Evolution">
+              <div class="slide-inner">
+                <button class="slide-cover" type="button" data-project="biodenim" aria-label="Apri la galleria: The Bio-Denim Evolution, 5 tavole">
+                  <img src="images/cover-biodenim.jpg" width="900" height="1272" alt="Tavola workwear donna della capsule Bio-Denim" loading="lazy" decoding="async">
+                </button>
+                <div class="slide-body">
+                  <p class="project-meta">Capsule · Denim sostenibile</p>
+                  <h3>The Bio-Denim Evolution</h3>
+                  <p class="project-facts">Progetto personale · Concept, design e tavole tecniche · Illustrator, Photoshop, disegno a mano libera</p>
+                  <p class="desc">Capsule in denim a basso impatto: <strong>cotone organico, canapa e Tencel</strong>, <strong>trattamenti a risparmio idrico</strong>, accessori in materiali riciclati. Cinque tavole: moodboard, carta materiali, workwear donna, essential uomo e il dettaglio dei bottoni.</p>
+                  <button class="btn view" type="button" data-project="biodenim">Sfoglia le 5 tavole</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="slide" role="group" aria-roledescription="progetto" aria-label="3 di 3 — Bridgerton, Underwear">
+              <div class="slide-inner">
+                <button class="slide-cover" type="button" data-project="bridgerton" aria-label="Apri la galleria: Bridgerton — Underwear, 8 tavole">
+                  <img src="images/cover-bridgerton.jpg" width="900" height="1272" alt="Tavola del corredo lingerie di Francesca, con varianti colore" loading="lazy" decoding="async">
+                </button>
+                <div class="slide-body">
+                  <p class="project-meta">Lingerie · Pizzo &amp; Regency</p>
+                  <h3>Bridgerton — Underwear</h3>
+                  <p class="project-facts">Progetto personale ispirato alla serie · Concept, figurini e varianti colore · Illustrator, Photoshop</p>
+                  <p class="desc">Sette personaggi, sette corredi. Lingerie ispirata alla serie: <strong>pizzi</strong>, tinte pastello e <strong>silhouette Regency</strong>, ogni modello in più varianti colore. Otto tavole, dal moodboard ai capi di Dafne, Francesca, Eloise, Penelope, Kate, Hyacinth e Violet.</p>
+                  <button class="btn view" type="button" data-project="bridgerton">Sfoglia le 8 tavole</button>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+        <button class="car-nav next" type="button" aria-label="Progetto successivo">&#8250;</button>
+        <div class="thumbs" id="carThumbs"></div>
+      </div>
+    </section>
+
+    <section id="competenze">
+      <h2>Competenze e strumenti</h2>
+      <p class="section-sub">Quello che uso ogni giorno, dal primo moodboard alla scheda tecnica che va in produzione.</p>
+      <div class="skills">
+        <div>
+          <h3>Software</h3>
+          <ul>
+            <li>Photoshop</li>
+            <li>Illustrator</li>
+            <li>InDesign</li>
+            <li>Gestionali ERP/PLM: Focalize, Navision, TexDefine</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Progettazione</h3>
+          <ul>
+            <li>Ricerca tendenze e colori</li>
+            <li>Disegno a mano libera e figurini</li>
+            <li>Grafica tessile e stampe</li>
+            <li>Schede tecniche per smacchinatura e confezione</li>
+            <li>Sviluppo collezione e controllo reparti</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Altro</h3>
+          <ul>
+            <li>AI generativa applicata al fashion</li>
+            <li>Materiali biotessili</li>
+            <li>Grafica pubblicitaria e still life</li>
+            <li>Italiano madrelingua · Inglese</li>
+          </ul>
+        </div>
       </div>
     </section>
 
     <section id="chisono">
       <div class="about">
-        <div class="photo"></div>
+        <div class="photo"><img src="images/michela.jpg" alt="Michela Porcu, fashion e graphic designer" loading="lazy"></div>
         <div>
           <h2>Chi sono</h2>
-          <p class="section-sub">Sono una designer con base in Italia. Lavoro con studi e piccole realtà per dare forma a marchi che si notano e si ricordano.</p>
-          <p>Racconta qui il tuo percorso, i tuoi strumenti preferiti, cosa ti appassiona. Due o tre frasi bastano per farti conoscere.</p>
+          <p class="section-sub">Lavoro dove il disegno incontra la produzione: ricerca tendenze e colori, figurini, <strong>grafica applicata al tessuto</strong> e al prodotto, <strong>schede tecniche</strong> per smacchinatura e confezione. Seguo la collezione passo passo, reparto per reparto, con <strong>Photoshop, Illustrator e InDesign</strong> e con i gestionali ERP/PLM.</p>
+          <p>Ho base a Zevio, in provincia di Verona. Disegno a <strong>mano libera</strong>, mi aggiorno sui <strong>materiali biotessili</strong> e sull'AI applicata alla moda. Fuori dall'ufficio stile faccio la <strong>costumista teatrale</strong> e la performer: tessuti storici e costume d'epoca sono la parte di ricerca che mi diverte di più.</p>
         </div>
       </div>
     </section>
 
+    <section id="esperienza">
+      <h2>Esperienza</h2>
+      <p class="section-sub">Sei anni tra ufficio stile e ufficio prodotto, nel pronto moda e nell'abbigliamento.</p>
+      <div class="exp">
+        <div class="row">
+          <div class="when">Feb 2020 – Apr 2025</div>
+          <div class="role">
+            <h3>Fashion Designer &amp; Product Assistant — Athesis s.r.l.</h3>
+            <p>Risorsa creativa nell'ufficio stile e prodotto. Dalla <strong>ricerca di tendenze e colori</strong> alla <strong>creazione delle grafiche</strong> per nuove collezioni e modelli, fino alla loro <strong>realizzazione</strong>, seguendo la collezione passo passo e controllando ogni reparto. Preparavo le <strong>schede tecniche</strong> per smacchinatura e confezione, inserivo i dati nel <strong>gestionale Focalize</strong>, disegnavo <strong>grafiche e figurini per il catalogo</strong>, ritoccavo le <strong>foto per gli still life</strong> del sito e realizzavo <strong>grafiche pubblicitarie</strong> per fiere e negozi.</p>
+            <p class="tools"><b>Strumenti:</b> Photoshop, Illustrator, InDesign, gestionale Focalize</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="when">Set 2017 – Dic 2018</div>
+          <div class="role">
+            <h3>Product Assistant — Franklin&amp;Marshall</h3>
+            <p>Ufficio prodotto e produzione. <strong>Controllo qualità</strong>, <strong>compilazione delle schede tecniche</strong>, uso dei programmi <strong>Navision e TexDefine</strong>, <strong>caricamento ordini fornitori</strong> e contatti con i fornitori, <strong>sdifettamento dei capi</strong>. Assistenza grafica: sistemazione della collezione e <strong>proposte grafiche con Illustrator</strong>.</p>
+            <p class="tools"><b>Strumenti:</b> Navision, TexDefine, Illustrator</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="when">Feb 2016 – Mag 2016</div>
+          <div class="role">
+            <h3>Fashion Designer — Tirocinio, Walmode</h3>
+            <p><strong>Ideazione di capi per la linea pronto moda donna</strong> e della collezione, con <strong>ricerca delle tendenze</strong> primavera-estate. Realizzazione dei <strong>figurini</strong> e delle <strong>schede tecniche</strong>, <strong>ricerca dei tessuti</strong> e delle <strong>grafiche per le stampe</strong> da inserire in collezione.</p>
+            <p class="tools"><b>Strumenti:</b> Illustrator, Photoshop, disegno a mano libera</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="formazione">
+      <h2>Formazione</h2>
+      <p class="section-sub">Accademia di moda e costume, più i corsi con cui mi tengo aggiornata.</p>
+      <ul class="edu">
+        <li><span class="what">Corso Social Media Marketing (40/40)</span><span class="year">2026</span></li>
+        <li><span class="what">Corso Tecnico Biotessile (40/40) — Irecoop Veneto</span><span class="year">2026</span></li>
+        <li><span class="what">Fashion Design — Fashion Ground Academy (110/100)<span class="edu-note">Progetti accademici per <strong>Corneliani</strong>, <strong>JEEP</strong>, OLTRE, +MINI e Laverda</span></span><span class="year">2011–2015</span></li>
+        <li><span class="what">Fashion &amp; Costume Design — Accademia di Costume e Moda di Roma</span><span class="year">2010–2011</span></li>
+        <li><span class="what">Diploma Moda e Costume — Istituto d'Arte N. Nani (88/100)</span><span class="year">2005–2010</span></li>
+      </ul>
+    </section>
+
     <section class="contact" id="contatti">
       <h2>Lavoriamo insieme</h2>
-      <p>Hai un progetto in mente? Scrivimi, rispondo volentieri.</p>
-      <a class="btn" href="mailto:tua-email@esempio.com">Scrivimi una mail</a>
+      <p class="intro">Progetti, collaborazioni o una collezione da sviluppare: scrivimi, rispondo in giornata.</p>
+      <div class="cta-row">
+        <a class="btn" href="mailto:porcu.michela@gmail.com">Scrivimi una mail</a>
+        <a class="btn btn-ghost" href="cv-michela-porcu.pdf" download>Scarica il CV (PDF)</a>
+      </div>
+      <p class="contact-meta">
+        <a href="mailto:porcu.michela@gmail.com">porcu.michela@gmail.com</a><br>
+        Zevio (Verona) · Disponibile per collaborazioni e trasferte
+      </p>
     </section>
 
     <footer>
-      © 2026 Michela — Fatto con cura.
+      <div class="flinks">
+        <a href="mailto:porcu.michela@gmail.com">Email</a><span>·</span>
+        <a href="cv-michela-porcu.pdf" download>CV (PDF)</a><span>·</span>
+        <a href="#lavori">Lavori</a>
+      </div>
+      © 2026 Michela Porcu — Fashion &amp; Graphic Designer
     </footer>
   </div>
+
+  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Galleria delle tavole">
+    <span class="lb-count" aria-live="polite"></span>
+    <button class="close" type="button" aria-label="Chiudi la galleria">&times;</button>
+    <button class="lb-prev" type="button" aria-label="Tavola precedente">&#8249;</button>
+    <figure class="lb-fig">
+      <img alt="">
+      <figcaption class="lb-cap"></figcaption>
+    </figure>
+    <button class="lb-next" type="button" aria-label="Tavola successiva">&#8250;</button>
+    <p class="lb-hint">Frecce per scorrere · Esc per chiudere</p>
+  </div>
+
+  <script>
+  (function(){
+    'use strict';
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ---------- dati progetti: immagini + didascalie per tavola ---------- */
+    var projects = {
+      olimpiadi:{
+        title:'Olympics Line — Milano Cortina 2026',
+        boards:[
+          ['images/olimpiadi-01.jpg','Moodboard — Milano Cortina, neve e tricolore'],
+          ['images/olimpiadi-02.jpg','Materiali tecnici pensati per il freddo'],
+          ['images/olimpiadi-03.jpg','Stampe: cerchi olimpici e colori dei Giochi'],
+          ['images/olimpiadi-04.jpg','Linea donna 1/4 — capospalla e cappello tricolore'],
+          ['images/olimpiadi-05.jpg','Linea donna 2/4 — bomber con stampa a cerchi'],
+          ['images/olimpiadi-06.jpg','Linea donna 3/4 — giacca tecnica e varianti'],
+          ['images/olimpiadi-07.jpg','Linea donna 4/4 — top e capi base'],
+          ['images/olimpiadi-08.jpg','Linea uomo 1/4 — capospalla e cappello tricolore'],
+          ['images/olimpiadi-09.jpg','Linea uomo 2/4 — bomber con stampa grafica'],
+          ['images/olimpiadi-10.jpg','Linea uomo 3/4 — giacca tecnica e varianti'],
+          ['images/olimpiadi-11.jpg','Linea uomo 4/4 — giacca con dettaglio tricolore']
+        ]
+      },
+      biodenim:{
+        title:'The Bio-Denim Evolution',
+        boards:[
+          ['images/biodenim-1-moodboard.jpg','Moodboard — il denim che non spreca acqua'],
+          ['images/biodenim-2-materiali.jpg','Carta materiali: cotone organico, canapa e Tencel'],
+          ['images/biodenim-3-workwear-woman.jpg','Linea donna — workwear rivisitato'],
+          ['images/biodenim-4-essential-man.jpg','Linea uomo — capi essenziali'],
+          ['images/biodenim-5-accessori.jpg','Accessori e bottoni in materiali innovativi']
+        ]
+      },
+      bridgerton:{
+        title:'Bridgerton — Underwear',
+        boards:[
+          ['images/bridgerton-01.jpg','Moodboard — pizzi e silhouette Regency'],
+          ['images/bridgerton-02.jpg','Dafne — corredo lingerie e varianti colore'],
+          ['images/bridgerton-03.jpg','Francesca — corredo lingerie e varianti colore'],
+          ['images/bridgerton-04.jpg','Eloise — corredo lingerie e varianti colore'],
+          ['images/bridgerton-05.jpg','Penelope — corredo lingerie e varianti colore'],
+          ['images/bridgerton-06.jpg','Kate — corredo lingerie e varianti colore'],
+          ['images/bridgerton-07.jpg','Hyacinth — corredo lingerie e varianti colore'],
+          ['images/bridgerton-08.jpg','Violet — corredo lingerie e varianti colore']
+        ]
+      }
+    };
+
+    /* ---------- LIGHTBOX ---------- */
+    var lb       = document.getElementById('lb'),
+        lbImg    = lb.querySelector('img'),
+        lbCap    = lb.querySelector('.lb-cap'),
+        lbCount  = lb.querySelector('.lb-count'),
+        boards   = [], idx = 0, projTitle = '',
+        lastFocus = null, savedOverflow = '';
+
+    function preload(i){
+      if(!boards.length) return;
+      var n = boards.length;
+      new Image().src = boards[(i+1)%n][0];
+      new Image().src = boards[(i-1+n)%n][0];
+    }
+
+    function show(){
+      var b = boards[idx], src = b[0], cap = b[1];
+      lbCount.textContent = (idx+1) + ' / ' + boards.length;
+      lbCap.textContent   = cap;
+      var done = function(){
+        lbImg.src = src;
+        lbImg.alt = projTitle + ' — tavola ' + (idx+1) + ': ' + cap;
+        lbImg.style.opacity = 1;
+        preload(idx);
+      };
+      if(reduce){ done(); return; }
+      lbImg.style.opacity = 0;
+      var pre = new Image();
+      pre.onload = done;
+      pre.onerror = done;
+      pre.src = src;
+      if(pre.complete) done();
+    }
+
+    function openLb(key, i){
+      var p = projects[key];
+      if(!p || !p.boards.length) return;
+      boards = p.boards; projTitle = p.title; idx = i || 0;
+      lastFocus = document.activeElement;
+      savedOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';   /* blocca lo scroll dietro */
+      show();
+      lb.classList.add('open');
+      void lb.offsetWidth;                       /* forza il ricalcolo: senza, il focus cade su un elemento ancora invisibile */
+      lb.querySelector('.close').focus();
+    }
+
+    function closeLb(){
+      lb.classList.remove('open');
+      document.body.style.overflow = savedOverflow;
+      window.setTimeout(function(){ if(!lb.classList.contains('open')) lbImg.removeAttribute('src'); }, 300);
+      if(lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    function move(d){
+      if(!boards.length) return;
+      idx = (idx + d + boards.length) % boards.length;
+      show();
+    }
+
+    lb.querySelector('.close').addEventListener('click', closeLb);
+    lb.querySelector('.lb-prev').addEventListener('click', function(e){ e.stopPropagation(); move(-1); });
+    lb.querySelector('.lb-next').addEventListener('click', function(e){ e.stopPropagation(); move(1); });
+    lb.addEventListener('click', function(e){ if(e.target === lb || e.target === lb.querySelector('.lb-fig')) closeLb(); });
+
+    document.addEventListener('keydown', function(e){
+      if(!lb.classList.contains('open')) return;
+      if(e.key === 'Escape'){ closeLb(); return; }
+      if(e.key === 'ArrowLeft'){ move(-1); return; }
+      if(e.key === 'ArrowRight'){ move(1); return; }
+      if(e.key === 'Tab'){                       /* focus confinato nel dialog */
+        var f = lb.querySelectorAll('button');
+        var first = f[0], last = f[f.length-1];
+        if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+        else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+      }
+    });
+
+    /* swipe nel lightbox */
+    (function(){
+      var x0 = null;
+      lb.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, {passive:true});
+      lb.addEventListener('touchend', function(e){
+        if(x0 === null) return;
+        var dx = e.changedTouches[0].clientX - x0;
+        if(Math.abs(dx) > 45) move(dx < 0 ? 1 : -1);
+        x0 = null;
+      }, {passive:true});
+    })();
+
+    Array.prototype.forEach.call(document.querySelectorAll('.view, .slide-cover'), function(el){
+      el.addEventListener('click', function(){ openLb(el.dataset.project, 0); });
+    });
+
+    /* ---------- CAROSELLO ---------- */
+    var car    = document.getElementById('carousel'),
+        vp     = document.getElementById('carViewport'),
+        track  = car.querySelector('.car-track'),
+        slides = track.children,
+        n      = slides.length,
+        thumbs = document.getElementById('carThumbs'),
+        prevBtn= car.querySelector('.car-nav.prev'),
+        nextBtn= car.querySelector('.car-nav.next'),
+        cur    = 0;
+
+    /* anteprime: dicono a colpo d'occhio che i progetti sono tre */
+    for(var i = 0; i < n; i++){
+      (function(k){
+        var s   = slides[k],
+            img = s.querySelector('.slide-cover img'),
+            ttl = s.querySelector('h3').textContent.split('—')[0].trim();
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('aria-label', 'Vai al progetto: ' + s.querySelector('h3').textContent);
+        b.innerHTML = '<img src="' + img.getAttribute('src') + '" alt="" aria-hidden="true"><span></span>';
+        b.querySelector('span').textContent = ttl;
+        b.addEventListener('click', function(){ go(k); });
+        thumbs.appendChild(b);
+      })(i);
+    }
+
+    function offsetOf(k){
+      return slides[k].offsetLeft - slides[0].offsetLeft;
+    }
+
+    function go(k){
+      k = ((k % n) + n) % n;
+      vp.scrollTo({ left: offsetOf(k), behavior: reduce ? 'auto' : 'smooth' });
+      sync(k);
+    }
+
+    function sync(k){
+      cur = k;
+      Array.prototype.forEach.call(thumbs.children, function(t, j){
+        if(j === k) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current');
+      });
+      prevBtn.disabled = false;
+      nextBtn.disabled = false;
+    }
+
+    /* lo scroll nativo (swipe / trackpad) tiene allineati pallini e frecce */
+    var tck;
+    vp.addEventListener('scroll', function(){
+      window.clearTimeout(tck);
+      tck = window.setTimeout(function(){
+        var best = 0, bd = Infinity;
+        for(var j = 0; j < n; j++){
+          var d = Math.abs(offsetOf(j) - vp.scrollLeft);
+          if(d < bd){ bd = d; best = j; }
+        }
+        if(best !== cur) sync(best);
+      }, 90);
+    }, {passive:true});
+
+    prevBtn.addEventListener('click', function(){ go(cur - 1); });
+    nextBtn.addEventListener('click', function(){ go(cur + 1); });
+
+    /* se si arriva con Tab su una slide fuori vista, il carosello la porta in vista */
+    Array.prototype.forEach.call(slides, function(s, k){
+      s.addEventListener('focusin', function(){ if(k !== cur) go(k); });
+    });
+
+    sync(0);
+
+    /* ---------- bordo sotto la barra quando si scorre ---------- */
+    var navbar = document.getElementById('navbar');
+    function onScroll(){ navbar.classList.toggle('scrolled', window.scrollY > 8); }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  })();
+  </script>
 </body>
 </html>
