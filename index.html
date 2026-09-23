@@ -13,7 +13,7 @@
   <meta property="og:locale" content="it_IT">
   <meta property="og:site_name" content="Michela Porcu">
   <meta property="og:title" content="Michela Porcu — Fashion &amp; Graphic Designer">
-  <meta property="og:description" content="Collezioni, grafica tessile e schede tecniche, dal moodboard al capo finito. Tre progetti, tavola per tavola.">
+  <meta property="og:description" content="Collezioni, grafica tessile e schede tecniche, dal moodboard al capo finito. Quattro progetti, tavola per tavola.">
   <meta property="og:image" content="images/og-card.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -27,7 +27,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root{
       --bg:#faf7f2;
@@ -38,6 +38,7 @@
       --card:#ffffff;
       --line:#e7e0d6;
       --line-strong:#cbbfae;
+      --warm-quiet:#9c8b73;   /* 3,09:1 su --bg: quieto ma leggibile */
       --radius:16px;
       --radius-sm:8px;
       /* scala tipografica 1.25 */
@@ -63,7 +64,7 @@
 
     /* focus visibile su ogni elemento interattivo */
     :where(a,button,[tabindex]):focus-visible{
-      outline:2px solid var(--accent-ink);outline-offset:3px;border-radius:6px
+      outline:2px solid var(--accent-ink);outline-offset:3px;border-radius:var(--radius-sm)
     }
     .skip{
       position:absolute;left:-9999px;top:0;z-index:99;
@@ -85,9 +86,20 @@
     nav .links{display:flex;gap:24px;font-size:.93rem;font-weight:500;flex-wrap:wrap}
     nav .links a{text-decoration:none;color:var(--muted);transition:color .15s ease}
     nav .links a:hover{color:var(--ink)}
+    /* fascia intermedia: con sei voci la barra andrebbe a due righe fino a ~880px */
+    @media(max-width:880px){
+      nav{gap:14px}
+      nav .logo{font-size:1.08rem}
+      nav .links{gap:10px 12px;font-size:.84rem}
+    }
     @media(max-width:640px){
-      nav{flex-direction:column;align-items:flex-start;gap:10px;padding:14px 0}
-      nav .links{gap:16px;font-size:.85rem}
+      /* su un telefono da 640px ogni riga di barra sticky costa ~3% di viewport.
+         Logo e link restano sulla stessa riga: i link vanno a capo attorno al logo
+         invece di aprire una fascia a se' (prima erano ~98px, tre righe). */
+      nav{align-items:flex-start;gap:10px;padding:9px 0}
+      nav .logo{font-size:.92rem;line-height:1.4}
+      nav .links{gap:4px 11px;font-size:.74rem;justify-content:flex-end}
+      nav .links a{line-height:1.35}
     }
 
     /* HERO */
@@ -141,7 +153,7 @@
 
     /* SEZIONI */
     section{padding:clamp(64px,8vw,104px) 0;scroll-margin-top:86px}
-    @media(max-width:640px){section{scroll-margin-top:112px}}
+    @media(max-width:640px){section{scroll-margin-top:72px}}
     h2{
       font-family:"Fraunces",serif;font-weight:600;font-variation-settings:"opsz" 48;
       font-size:var(--t-h2);margin:0 0 10px;letter-spacing:-.01em
@@ -150,80 +162,67 @@
     #lavori{padding-bottom:clamp(80px,10vw,128px)}
     #formazione{border-top:1px solid var(--line)}
 
-    /* CAROSELLO PROGETTI */
-    .carousel{position:relative}
-    .car-viewport{
-      overflow-x:auto;overflow-y:hidden;border-radius:var(--radius);
-      scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch
+    /* PROGETTI — tre righe editoriali impilate */
+    .projects{display:grid;gap:clamp(60px,8.5vw,104px)}
+    .project{
+      display:grid;grid-template-columns:.82fr 1fr;
+      gap:clamp(28px,4.2vw,52px);align-items:start
     }
-    .car-viewport::-webkit-scrollbar{display:none}
-    .car-track{display:flex;gap:20px}
-    .slide{min-width:100%;scroll-snap-align:start}
-    .slide-inner{
-      display:grid;grid-template-columns:.82fr 1fr;min-height:0;
-      background:var(--card);border:1px solid var(--line);
-      border-radius:var(--radius);overflow:hidden
+    /* la copertina alterna lato: sinistra / destra / sinistra.
+       Si scambiano anche le due colonne, non solo l'ordine: con il solo `order`
+       la copertina finirebbe nella colonna larga (1fr) e il testo in quella stretta,
+       e la riga centrale risulterebbe piu' grande delle altre due. */
+    .project:nth-child(even){grid-template-columns:1fr .82fr}
+    .project:nth-child(even) .project-cover{grid-column:2;grid-row:1}
+    .project:nth-child(even) .project-body{grid-column:1;grid-row:1}
+    /* La tavola e' 900x1272: la scatola ha la stessa proporzione e l'immagine sta
+       DENTRO (contain), mai tagliata. Il fondo caldo resta visibile come margine:
+       ogni tavola si legge come un foglio appoggiato sulla scrivania. */
+    .project-cover{
+      position:relative;display:block;width:100%;margin:0;
+      padding:clamp(12px,1.6vw,18px);
+      border:1px solid var(--line);border-radius:var(--radius);
+      background:#efe8dd;cursor:zoom-in;overflow:hidden;aspect-ratio:900/1272;font:inherit;
+      transition:background .2s ease,border-color .2s ease,box-shadow .25s ease
     }
-    .slide-cover{
-      position:relative;display:block;width:100%;padding:0;margin:0;border:none;
-      background:#efe8dd;cursor:zoom-in;overflow:hidden;aspect-ratio:3/4;font:inherit
+    .project-cover img{width:100%;height:100%;object-fit:contain}
+    /* niente scale sull'immagine: ingrandirla ritaglierebbe di nuovo la firma.
+       L'affordance sta sul foglio, non sul disegno. */
+    .project-cover:hover,.project-cover:focus-visible{
+      background:#e9e0d1;border-color:var(--line-strong);
+      box-shadow:0 10px 30px rgba(28,25,21,.10)
     }
-    .slide-cover img{width:100%;height:100%;object-fit:cover;object-position:center 22%;transition:transform .5s ease}
-    .slide-cover:hover img{transform:scale(1.03)}
-    .cover-badge{
-      position:absolute;left:14px;bottom:14px;
-      background:rgba(28,25,21,.72);color:#fff;font-size:.78rem;font-weight:500;
-      padding:5px 12px;border-radius:999px;letter-spacing:.01em;pointer-events:none
-    }
-    .slide-body{padding:40px 44px;display:flex;flex-direction:column;justify-content:center}
-    .slide-body .project-meta{
+    .project-body{display:flex;flex-direction:column;min-width:0;padding-top:6px}
+    .project-meta{
+      display:flex;align-items:baseline;gap:12px;
       color:var(--accent-ink);font-weight:600;font-size:.8rem;margin:0 0 12px;
       text-transform:uppercase;letter-spacing:.06em
     }
-    .slide-body h3{
+    .project-num{
+      font-family:"Fraunces",serif;font-variation-settings:"opsz" 24;
+      font-size:1.05rem;letter-spacing:0;color:var(--warm-quiet);flex:none
+    }
+    .project-body h3{
       font-family:"Fraunces",serif;font-weight:600;font-variation-settings:"opsz" 24;
-      font-size:var(--t-h3);line-height:1.12;margin:0 0 10px
+      font-size:var(--t-h3);line-height:1.12;margin:0 0 10px;max-width:24ch
     }
     .project-facts{
       color:var(--muted);font-size:.83rem;margin:0 0 18px;
-      padding-bottom:16px;border-bottom:1px solid var(--line);line-height:1.5
+      padding-bottom:16px;border-bottom:1px solid var(--line);line-height:1.5;max-width:52ch
     }
-    .slide-body p.desc{color:var(--muted);margin:0 0 28px}
-    .slide-body p.desc strong{color:var(--ink);font-weight:600}
-    .slide-body .btn{align-self:flex-start}
+    .project-body p.desc{color:var(--muted);margin:0 0 28px;max-width:52ch}
+    .project-body p.desc strong{color:var(--ink);font-weight:600}
+    .project-body .btn{align-self:flex-start}
     @media(max-width:820px){
-      .slide-inner{grid-template-columns:1fr}
-      .slide-cover{aspect-ratio:3/4;max-height:64vh}
-      .slide-body{padding:26px 24px 30px}
+      .project,.project:nth-child(even){grid-template-columns:1fr;gap:22px}
+      .project:nth-child(even) .project-cover,
+      .project:nth-child(even) .project-body{grid-column:1;grid-row:auto}
     }
-    .car-nav{
-      position:absolute;top:50%;transform:translateY(-50%);z-index:3;
-      width:44px;height:44px;border-radius:50%;border:1px solid var(--line);
-      background:#fff;color:var(--ink);font-size:1.45rem;line-height:1;cursor:pointer;
-      box-shadow:0 4px 14px rgba(28,25,21,.10);
-      display:flex;align-items:center;justify-content:center;
-      transition:background .15s,border-color .15s,opacity .15s
+    /* la larghezza piena serve solo al telefono: tra 640 e 820 la riga
+       arriverebbe a ~94 caratteri, fuori dall'intervallo leggibile 45-75 */
+    @media(max-width:640px){
+      .project-body h3,.project-facts,.project-body p.desc{max-width:none}
     }
-    .car-nav:hover{background:var(--accent);border-color:var(--accent)}
-    .car-nav[disabled]{opacity:.32;cursor:default}
-    .car-nav[disabled]:hover{background:#fff;border-color:var(--line)}
-    .car-nav.prev{left:-14px}
-    .car-nav.next{right:-14px}
-    @media(max-width:1100px){.car-nav.prev{left:6px}.car-nav.next{right:6px}}
-    /* su mobile le frecce finiscono sopra il disegno: restano swipe e anteprime */
-    @media(max-width:820px){.car-nav{display:none}}
-
-    /* anteprime dei tre progetti: si vede a colpo d'occhio che sono tre */
-    .thumbs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px}
-    .thumbs button{
-      display:flex;align-items:center;gap:10px;
-      background:transparent;border:1px solid var(--line);border-radius:999px;
-      padding:5px 16px 5px 5px;cursor:pointer;font:inherit;font-size:.85rem;font-weight:500;
-      color:var(--muted);transition:border-color .15s,color .15s,background .15s
-    }
-    .thumbs button:hover{border-color:var(--line-strong);color:var(--ink)}
-    .thumbs button img{width:34px;height:34px;border-radius:50%;object-fit:cover;object-position:center 20%}
-    .thumbs button[aria-current="true"]{border-color:var(--accent-ink);color:var(--ink);background:#fdf6e6}
 
     /* LIGHTBOX */
     .lb{
@@ -284,7 +283,7 @@
     .skills li{position:relative;padding-left:17px;color:var(--muted);font-size:.95rem;line-height:1.45}
     .skills li::before{
       content:"";position:absolute;left:0;top:.6em;
-      width:6px;height:6px;border-radius:50%;background:var(--accent)
+      width:6px;height:6px;border-radius:50%;background:var(--warm-quiet)
     }
 
     /* CHI SONO */
@@ -342,22 +341,20 @@
 
     /* STAMPA / SALVA IN PDF */
     @media print{
-      .navbar,.car-nav,.thumbs,.lb,.skip,.cover-badge{display:none !important}
+      .navbar,.lb,.skip{display:none !important}
       header.hero::before,header.hero::after{display:none !important}
       body{background:#fff;color:#000}
       section{padding:18px 0;break-inside:avoid}
-      .car-viewport{overflow:visible}
-      .car-track{display:block}
-      .slide,.slide:last-child{min-width:0;break-inside:avoid;margin-bottom:22px}
-      .slide-inner{grid-template-columns:.8fr 1fr;border:1px solid #ccc}
-      .slide-cover{max-height:none}
+      .projects{gap:24px}
+      .project{gap:20px;break-inside:avoid}
+      .project-cover{border:1px solid #ccc}
       .about{grid-template-columns:1fr 1.4fr}
       a[href^="mailto"]::after,a[href$=".pdf"]::after{content:" (" attr(href) ")";font-size:.8em;color:#555}
     }
   </style>
 </head>
 <body>
-  <a class="skip" href="#lavori">Salta ai lavori</a>
+  <a class="skip" href="#top">Salta al contenuto</a>
 
   <div class="navbar" id="navbar">
     <div class="wrap">
@@ -368,18 +365,19 @@
           <a href="#competenze">Competenze</a>
           <a href="#chisono">Chi sono</a>
           <a href="#esperienza">Esperienza</a>
+          <a href="#formazione">Formazione</a>
           <a href="#contatti">Contatti</a>
         </div>
       </nav>
     </div>
   </div>
 
-  <div class="wrap">
+  <main class="wrap">
 
     <header class="hero" id="top">
       <p class="kicker">Fashion &amp; Graphic Designer</p>
       <h1>Disegno collezioni e le grafiche che le raccontano</h1>
-      <p class="lead">Sono Michela Porcu. Sei anni tra ufficio stile e ufficio prodotto: ricerca tendenze, figurini, grafica tessile e schede tecniche. Qui sotto tre progetti, tavola per tavola.</p>
+      <p class="lead">Sono Michela Porcu. Sei anni tra ufficio stile e ufficio prodotto: ricerca tendenze, figurini, grafica tessile e schede tecniche. Qui sotto quattro progetti, tavola per tavola.</p>
       <div class="cta-row">
         <a class="btn" href="#lavori">Guarda i lavori</a>
         <a class="btn btn-ghost" href="cv-michela-porcu.pdf" download>Scarica il CV (PDF)</a>
@@ -388,62 +386,62 @@
 
     <section id="lavori">
       <h2>Lavori selezionati</h2>
-      <p class="section-sub">Tre progetti completi, dalla ricerca ai capi finiti. Apri un progetto per sfogliare le tavole a schermo intero.</p>
+      <p class="section-sub">Quattro progetti: tre collezioni complete, dalla ricerca ai capi finiti, e un rebranding. Apri un progetto per sfogliare le tavole a schermo intero.</p>
 
-      <div class="carousel" id="carousel" role="group" aria-roledescription="carosello" aria-label="Lavori selezionati">
-        <button class="car-nav prev" type="button" aria-label="Progetto precedente">&#8249;</button>
-        <div class="car-viewport" id="carViewport">
-          <div class="car-track">
+      <div class="projects">
 
-            <article class="slide" role="group" aria-roledescription="progetto" aria-label="1 di 3 — Olympics Line, Milano Cortina 2026">
-              <div class="slide-inner">
-                <button class="slide-cover" type="button" data-project="olimpiadi" aria-label="Apri la galleria: Olympics Line — Milano Cortina 2026, 11 tavole">
-                  <img src="images/cover-olimpiadi.jpg" width="900" height="1272" alt="Tavola della Olympics Line: giacca sportswear con stampa dei cerchi olimpici" loading="eager" fetchpriority="high" decoding="async">
-                </button>
-                <div class="slide-body">
-                  <p class="project-meta">Sportswear · Milano Cortina 2026</p>
-                  <h3>Olympics Line — Milano Cortina 2026</h3>
-                  <p class="project-facts">2025–2026 · Progetto personale, non commissionato · Concept, grafiche e linea completa donna e uomo · Illustrator, Photoshop</p>
-                  <p class="desc">Progetto personale per i Giochi invernali 2026. Sportswear con i <strong>cerchi olimpici</strong> reinterpretati in grafica, <strong>stampe</strong> nei colori delle Olimpiadi e dettagli tricolore. Undici tavole: moodboard, materiali, stampe e le linee complete donna e uomo.</p>
-                  <button class="btn view" type="button" data-project="olimpiadi">Sfoglia le 11 tavole</button>
-                </div>
-              </div>
-            </article>
-
-            <article class="slide" role="group" aria-roledescription="progetto" aria-label="2 di 3 — The Bio-Denim Evolution">
-              <div class="slide-inner">
-                <button class="slide-cover" type="button" data-project="biodenim" aria-label="Apri la galleria: The Bio-Denim Evolution, 5 tavole">
-                  <img src="images/cover-biodenim.jpg" width="900" height="1272" alt="Tavola workwear donna della capsule Bio-Denim" loading="lazy" decoding="async">
-                </button>
-                <div class="slide-body">
-                  <p class="project-meta">Capsule · Denim sostenibile</p>
-                  <h3>The Bio-Denim Evolution</h3>
-                  <p class="project-facts">Progetto personale · Concept, design e tavole tecniche · Illustrator, Photoshop, disegno a mano libera</p>
-                  <p class="desc">Capsule in denim a basso impatto: <strong>cotone organico, canapa e Tencel</strong>, <strong>trattamenti a risparmio idrico</strong>, accessori in materiali riciclati. Cinque tavole: moodboard, carta materiali, workwear donna, essential uomo e il dettaglio dei bottoni.</p>
-                  <button class="btn view" type="button" data-project="biodenim">Sfoglia le 5 tavole</button>
-                </div>
-              </div>
-            </article>
-
-            <article class="slide" role="group" aria-roledescription="progetto" aria-label="3 di 3 — Bridgerton, Underwear">
-              <div class="slide-inner">
-                <button class="slide-cover" type="button" data-project="bridgerton" aria-label="Apri la galleria: Bridgerton — Underwear, 8 tavole">
-                  <img src="images/cover-bridgerton.jpg" width="900" height="1272" alt="Tavola del corredo lingerie di Francesca, con varianti colore" loading="lazy" decoding="async">
-                </button>
-                <div class="slide-body">
-                  <p class="project-meta">Lingerie · Pizzo &amp; Regency</p>
-                  <h3>Bridgerton — Underwear</h3>
-                  <p class="project-facts">Progetto personale ispirato alla serie · Concept, figurini e varianti colore · Illustrator, Photoshop</p>
-                  <p class="desc">Sette personaggi, sette corredi. Lingerie ispirata alla serie: <strong>pizzi</strong>, tinte pastello e <strong>silhouette Regency</strong>, ogni modello in più varianti colore. Otto tavole, dal moodboard ai capi di Dafne, Francesca, Eloise, Penelope, Kate, Hyacinth e Violet.</p>
-                  <button class="btn view" type="button" data-project="bridgerton">Sfoglia le 8 tavole</button>
-                </div>
-              </div>
-            </article>
-
+        <article class="project" aria-labelledby="t-olimpiadi">
+          <button class="project-cover" type="button" data-project="olimpiadi" aria-label="Apri la galleria: Olympics Line — Milano Cortina 2026, 11 tavole">
+            <img src="images/cover-olimpiadi.jpg" width="900" height="1272" alt="Tavola della Olympics Line: giacca sportswear con stampa dei cerchi olimpici" loading="eager" fetchpriority="high" decoding="async">
+          </button>
+          <div class="project-body">
+            <p class="project-meta"><span class="project-num" aria-hidden="true">01</span>Sportswear · Milano Cortina 2026</p>
+            <h3 id="t-olimpiadi">Olympics Line — Milano Cortina 2026</h3>
+            <p class="project-facts">2025–2026 · Progetto personale, non commissionato · Concept, grafiche e linea completa donna e uomo · Illustrator, Photoshop</p>
+            <p class="desc">Progetto personale per i Giochi invernali 2026. Sportswear con i <strong>cerchi olimpici</strong> reinterpretati in grafica, <strong>stampe</strong> nei colori delle Olimpiadi e dettagli tricolore. Undici tavole: moodboard, materiali, stampe e le linee complete donna e uomo.</p>
+            <button class="btn view" type="button" data-project="olimpiadi">Sfoglia le 11 tavole</button>
           </div>
-        </div>
-        <button class="car-nav next" type="button" aria-label="Progetto successivo">&#8250;</button>
-        <div class="thumbs" id="carThumbs"></div>
+        </article>
+
+        <article class="project" aria-labelledby="t-biodenim">
+          <button class="project-cover" type="button" data-project="biodenim" aria-label="Apri la galleria: The Bio-Denim Evolution, 5 tavole">
+            <img src="images/cover-biodenim.jpg" width="900" height="1272" alt="Tavola workwear donna della capsule Bio-Denim" loading="lazy" decoding="async">
+          </button>
+          <div class="project-body">
+            <p class="project-meta"><span class="project-num" aria-hidden="true">02</span>Capsule · Denim sostenibile</p>
+            <h3 id="t-biodenim">The Bio-Denim Evolution</h3>
+            <p class="project-facts">Progetto personale · Concept, design e tavole tecniche · Illustrator, Photoshop, disegno a mano libera</p>
+            <p class="desc">Capsule in denim a basso impatto: <strong>cotone organico, canapa e Tencel</strong>, <strong>trattamenti a risparmio idrico</strong>, accessori in materiali riciclati. Cinque tavole: moodboard, carta materiali, workwear donna, essential uomo e il dettaglio dei bottoni.</p>
+            <button class="btn view" type="button" data-project="biodenim">Sfoglia le 5 tavole</button>
+          </div>
+        </article>
+
+        <article class="project" aria-labelledby="t-bridgerton">
+          <button class="project-cover" type="button" data-project="bridgerton" aria-label="Apri la galleria: Bridgerton — Underwear, 8 tavole">
+            <img src="images/cover-bridgerton.jpg" width="900" height="1272" alt="Tavola del corredo lingerie di Francesca, con varianti colore" loading="lazy" decoding="async">
+          </button>
+          <div class="project-body">
+            <p class="project-meta"><span class="project-num" aria-hidden="true">03</span>Lingerie · Pizzo &amp; Regency</p>
+            <h3 id="t-bridgerton">Bridgerton — Underwear</h3>
+            <p class="project-facts">Progetto personale ispirato alla serie · Concept, figurini e varianti colore · Illustrator, Photoshop</p>
+            <p class="desc">Sette personaggi, sette corredi. Lingerie ispirata alla serie: <strong>pizzi</strong>, tinte pastello e <strong>silhouette Regency</strong>, ogni modello in più varianti colore. Otto tavole, dal moodboard ai capi di Dafne, Francesca, Eloise, Penelope, Kate, Hyacinth e Violet.</p>
+            <button class="btn view" type="button" data-project="bridgerton">Sfoglia le 8 tavole</button>
+          </div>
+        </article>
+
+        <article class="project" aria-labelledby="t-abc">
+          <button class="project-cover" type="button" data-project="abc" aria-label="Apri la galleria: Rebranding — ABC Musical Company, 3 immagini">
+            <img src="images/cover-abc.jpg" width="900" height="1272" alt="Confronto prima e dopo: il logo storico ABC e il nuovo logo a farfalla" loading="lazy" decoding="async">
+          </button>
+          <div class="project-body">
+            <p class="project-meta"><span class="project-num" aria-hidden="true">04</span>Graphic design · Brand identity</p>
+            <h3 id="t-abc">Rebranding — ABC Musical Company</h3>
+            <p class="project-facts">Compagnia ABC Attori Ballerini Cantanti, Verona · Redesign del logo e dell'identità grafica · Illustrator, Photoshop</p>
+            <p class="desc">Ridisegno del logo e dell'identità grafica della compagnia di musical ABC – Attori Ballerini Cantanti. Il logo storico non comunicava l'attività della compagnia: ho isolato gli elementi da conservare — i tre colori primari, il cerchio come idea di famiglia e relazione, la <strong>farfalla</strong> come trasformazione — e li ho riorganizzati. Nel nuovo logo la farfalla diventa il simbolo principale, con il corpo formato da una <strong>chiave di violino</strong>, il fulcro dell'attività; i colori trovano un ordine più chiaro e il font passa a <strong>Cooper Black</strong>, più morbido e creativo. Più pulizia, più chiarezza.</p>
+            <button class="btn view" type="button" data-project="abc">Guarda il rebranding</button>
+          </div>
+        </article>
+
       </div>
     </section>
 
@@ -457,6 +455,8 @@
             <li>Photoshop</li>
             <li>Illustrator</li>
             <li>InDesign</li>
+            <li>Canva</li>
+            <li>Pacchetto Office (Word, Excel, PowerPoint)</li>
             <li>Gestionali ERP/PLM: Focalize, Navision, TexDefine</li>
           </ul>
         </div>
@@ -557,7 +557,7 @@
       </div>
       © 2026 Michela Porcu — Fashion &amp; Graphic Designer
     </footer>
-  </div>
+  </main>
 
   <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Galleria delle tavole">
     <span class="lb-count" aria-live="polite"></span>
@@ -616,6 +616,14 @@
           ['images/bridgerton-07.jpg','Hyacinth — corredo lingerie e varianti colore'],
           ['images/bridgerton-08.jpg','Violet — corredo lingerie e varianti colore']
         ]
+      },
+      abc:{
+        title:'Rebranding — ABC Musical Company',
+        boards:[
+          ['images/cover-abc.jpg','Prima → dopo'],
+          ['images/abc-logo-storico.jpg','Logo storico'],
+          ['images/abc-logo-nuovo.jpg','Il nuovo logo']
+        ]
       }
     };
 
@@ -634,15 +642,23 @@
       new Image().src = boards[(i-1+n)%n][0];
     }
 
+    var seq = 0;   /* ogni show() ha un numero: solo l'ultimo puo' scrivere nel lightbox */
+
     function show(){
-      var b = boards[idx], src = b[0], cap = b[1];
-      lbCount.textContent = (idx+1) + ' / ' + boards.length;
+      var i = idx, b = boards[i], src = b[0], cap = b[1],
+          my = ++seq, spent = false;
+      lbCount.textContent = (i+1) + ' / ' + boards.length;
       lbCap.textContent   = cap;
       var done = function(){
+        /* se nel frattempo si e' premuto freccia/Esc, questa immagine e' vecchia:
+           senza questo controllo il caricamento lento di una tavola precedente
+           si sovrascriverebbe a quella corrente, fuori sincrono con contatore e didascalia */
+        if(my !== seq || spent) return;
+        spent = true;
         lbImg.src = src;
-        lbImg.alt = projTitle + ' — tavola ' + (idx+1) + ': ' + cap;
+        lbImg.alt = projTitle + ' — tavola ' + (i+1) + ': ' + cap;
         lbImg.style.opacity = 1;
-        preload(idx);
+        preload(i);
       };
       if(reduce){ done(); return; }
       lbImg.style.opacity = 0;
@@ -709,79 +725,9 @@
       }, {passive:true});
     })();
 
-    Array.prototype.forEach.call(document.querySelectorAll('.view, .slide-cover'), function(el){
+    Array.prototype.forEach.call(document.querySelectorAll('.view, .project-cover'), function(el){
       el.addEventListener('click', function(){ openLb(el.dataset.project, 0); });
     });
-
-    /* ---------- CAROSELLO ---------- */
-    var car    = document.getElementById('carousel'),
-        vp     = document.getElementById('carViewport'),
-        track  = car.querySelector('.car-track'),
-        slides = track.children,
-        n      = slides.length,
-        thumbs = document.getElementById('carThumbs'),
-        prevBtn= car.querySelector('.car-nav.prev'),
-        nextBtn= car.querySelector('.car-nav.next'),
-        cur    = 0;
-
-    /* anteprime: dicono a colpo d'occhio che i progetti sono tre */
-    for(var i = 0; i < n; i++){
-      (function(k){
-        var s   = slides[k],
-            img = s.querySelector('.slide-cover img'),
-            ttl = s.querySelector('h3').textContent.split('—')[0].trim();
-        var b = document.createElement('button');
-        b.type = 'button';
-        b.setAttribute('aria-label', 'Vai al progetto: ' + s.querySelector('h3').textContent);
-        b.innerHTML = '<img src="' + img.getAttribute('src') + '" alt="" aria-hidden="true"><span></span>';
-        b.querySelector('span').textContent = ttl;
-        b.addEventListener('click', function(){ go(k); });
-        thumbs.appendChild(b);
-      })(i);
-    }
-
-    function offsetOf(k){
-      return slides[k].offsetLeft - slides[0].offsetLeft;
-    }
-
-    function go(k){
-      k = ((k % n) + n) % n;
-      vp.scrollTo({ left: offsetOf(k), behavior: reduce ? 'auto' : 'smooth' });
-      sync(k);
-    }
-
-    function sync(k){
-      cur = k;
-      Array.prototype.forEach.call(thumbs.children, function(t, j){
-        if(j === k) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current');
-      });
-      prevBtn.disabled = false;
-      nextBtn.disabled = false;
-    }
-
-    /* lo scroll nativo (swipe / trackpad) tiene allineati pallini e frecce */
-    var tck;
-    vp.addEventListener('scroll', function(){
-      window.clearTimeout(tck);
-      tck = window.setTimeout(function(){
-        var best = 0, bd = Infinity;
-        for(var j = 0; j < n; j++){
-          var d = Math.abs(offsetOf(j) - vp.scrollLeft);
-          if(d < bd){ bd = d; best = j; }
-        }
-        if(best !== cur) sync(best);
-      }, 90);
-    }, {passive:true});
-
-    prevBtn.addEventListener('click', function(){ go(cur - 1); });
-    nextBtn.addEventListener('click', function(){ go(cur + 1); });
-
-    /* se si arriva con Tab su una slide fuori vista, il carosello la porta in vista */
-    Array.prototype.forEach.call(slides, function(s, k){
-      s.addEventListener('focusin', function(){ if(k !== cur) go(k); });
-    });
-
-    sync(0);
 
     /* ---------- bordo sotto la barra quando si scorre ---------- */
     var navbar = document.getElementById('navbar');
